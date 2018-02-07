@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">FireStore</string>
+    <string name="click_to_create_an_account">Click to create an account</string>
+    <string name="register_page_title">Register Page</string>
+    <string name="logo_discription">Logo</string>
+    <string name="reg_display_name">Display Name</string>
+    <string name="reg_email">Email</string>
+    <string name="reg_password_hint">Password</string>
+    <string name="reg_sign_up_btn_txt">Create Account</string>
+    <string name="login_btn_text">Log In</string>
+    <string name="login_sign_up_btn">Sign Up</string>
+    <string name="login_create_a_new_account_txt_view">Not a member yet? Sign Up</string>
+    <string name="reg_log_in_btn">Sign In</string>
+    <string name="reg_already_have_an_account_txt_view">Already have an account? Sign In</string>
+    <string name="reg_sign_up_title_text">Sign Up</string>
+    <string name="main_menu_log_out_txt">Log Out</string>
+    <string name="main_menu_account_settings_txt">Account Settings</string>
+</resources>

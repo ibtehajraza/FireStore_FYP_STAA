@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "74906203044",
+    "firebase_url": "https://demofyp-database.firebaseio.com",
+    "project_id": "demofyp-database",
+    "storage_bucket": "demofyp-database.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74906203044:android:e4e7c76d7c9c03c5",
+        "android_client_info": {
+          "package_name": "com.fyp.ibtehaj.firestore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74906203044-fjteh0m1vt693n9eligk8cfcbj806h8a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fyp.ibtehaj.firestore",
+            "certificate_hash": "b64bd469c7512e2168e369b720cbbb4eb1ec4067"
+          }
+        },
+        {
+          "client_id": "74906203044-f10evr0j833ftuc3kprb14q3s4s88a6i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8ydbE01EvCOLph2h-OH1nj1MPuuMljqo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "74906203044-f10evr0j833ftuc3kprb14q3s4s88a6i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
