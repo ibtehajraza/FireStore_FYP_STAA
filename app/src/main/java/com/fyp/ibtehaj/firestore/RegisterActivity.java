@@ -3,7 +3,6 @@ package com.fyp.ibtehaj.firestore;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,12 +11,10 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,11 +23,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -170,7 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
         salesMan.setName(displayName);
         salesMan.setEmail(email);
         salesMan.setArea("TEMP_Gulshan Iqbal, Karachi");
-        salesMan.setPhoneNo("090078601");
+        salesMan.setContact("090078601");
         salesMan.setScore("00");
 
         HashMap<String , String> meetingHash = new HashMap<>();

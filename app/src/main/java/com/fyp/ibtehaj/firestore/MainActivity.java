@@ -7,10 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,12 +17,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
     private void getData(){
 
         final TextView textView , textView1, textView2;
-        textView = (TextView) findViewById(R.id.textView);
-        textView1 = (TextView) findViewById(R.id.textView2);
-        textView2 = (TextView) findViewById(R.id.textView3);
+        textView = findViewById(R.id.textView);
+        textView1 = findViewById(R.id.textView2);
+        textView2 = findViewById(R.id.textView3);
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -73,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (currentUser != null) {
 
-            DatabaseReference mRef = database.getReference("sales man")
+            DatabaseReference mRef = database.getReference("SalesMan")
                     .child(currentUser.getUid());
 
             ValueEventListener postListener = new ValueEventListener() {
@@ -86,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                         +"\nEmail: "+salesMan.getEmail()
                         +"\nArea: "+salesMan.getArea()
                         +"\nScore: "+salesMan.getScore()
-                        +"\nPhone: "+salesMan.getPhoneNo());
+                        +"\nPhone: "+salesMan.getContact());
 //                    log( dataSnapshot.getValue().toString());
 //                    log( "Name: "+salesMan.getName()+"\nEmail: "+salesMan.getEmail());
                     textView.setText(salesMan.getName());
@@ -95,11 +92,11 @@ public class MainActivity extends AppCompatActivity {
                             "\nEmail: " + salesMan.getEmail() +
                             "\nArea: " + salesMan.getArea() +
                             "\nScore: " + salesMan.getScore() +
-                            "\nPhone: " + salesMan.getPhoneNo()
+                            "\nPhone: " + salesMan.getContact()
                     );
 
 
-                    DatabaseReference mMeetingRef = FirebaseDatabase.getInstance().getReference("sales man")
+                    DatabaseReference mMeetingRef = FirebaseDatabase.getInstance().getReference("SalesMan")
                             .child(mAuth.getCurrentUser().getUid()).child("meeting");
 
                     mMeetingRef.addChildEventListener(new ChildEventListener() {
@@ -235,18 +232,52 @@ public class MainActivity extends AppCompatActivity {
 
     private void tempGetDatabase(){
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
-                .getReference("schedule").child("id-s01").child("medicine");
+//        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
+//                .getReference("Schedule").child("dVJADHQ2rDflxtuNjAmY1hh7wGy2");
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        Calendar calendar = Calendar.getInstance();
+        String dayLongName = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+        log("******************"+dayLongName.toLowerCase()+"***************");
+        final Query databaseReference = FirebaseDatabase.getInstance()
+                .getReference("Schedule").child("dVJADHQ2rDflxtuNjAmY1hh7wGy2")
+                .orderByChild("day")
+                .equalTo("monday");
+
+
+        /* **/
+
+        databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-//                   log(dataSnapshot.getKey()+ dataSnapshot.getValue().toString());
-//                HashMap hashMap = dataSnapshot.getValue(HashMap.class);
-//                log(hashMap != null ? hashMap.values().toString() : "null");
-                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                    log("Key: "+postSnapshot.getKey()+" Value: "+ postSnapshot.getValue().toString());
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                if(dataSnapshot.hasChildren()){
+                    Schedule schedule = dataSnapshot.getValue(Schedule.class);
+                    if (schedule != null) {
+                        log(schedule.getDay()+" - "+schedule.getBrick()
+                                +" - "+schedule.getDocId()
+                                +" - "+schedule.getDocName()
+                                +" - "+schedule.getTimeStamp());
+                    }
+                    for (DataSnapshot postDataSnapshot: dataSnapshot.child("medicine").getChildren()){
+
+                        log("Key: "+postDataSnapshot.getKey()+" Value: "+ postDataSnapshot.getValue().toString());
+                    }
                 }
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
             }
 
@@ -255,6 +286,34 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        /* **/
+        /*
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+//                   log(dataSnapshot.getKey()+ dataSnapshot.getValue().toString());
+//                HashMap hashMap = dataSnapshot.getValue(HashMap.class);
+//                log(hashMap != null ? hashMap.values().toString() : "null");
+                Schedule schedule = dataSnapshot.getValue(Schedule.class);
+                if (schedule != null) {
+                    log(schedule.getDay());
+                }
+
+                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                    log("Key: "+postSnapshot.getKey()+" Value: "+ postSnapshot.getValue().toString());
+                    for(DataSnapshot medicineDataSnapShot : postSnapshot.child("medicine").getChildren()){
+                        log("Key: "+medicineDataSnapShot.getKey()+" Value: "+ medicineDataSnapShot.getValue().toString());
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
 
     }
 

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="2dp">
+
+
+    <ImageView
+        android:id="@+id/side_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/container_side_line_blue" />
+
+    <LinearLayout
+        android:id="@+id/mainBody"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:orientation="vertical">
+
+        <TextView
+
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/carrois_gothic_sc"
+            android:text="Shafqat Ullah"
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+            android:textColor="@color/colorTitleText"
+            android:textStyle="bold"
+            android:letterSpacing="0.2"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/specialization"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0.2dp"
+            android:text="physician"
+            android:alpha="0.89"
+            android:textColor="@color/colorTitleText"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Area: Gulshan-e-Iqbal"
+            android:textColor="@color/colorTitleText"
+            android:alpha="0.8"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:text="Contect: 0900-78601"
+            android:alpha="0.8"
+            android:textColor="@color/colorTitleText"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:orientation="horizontal"
+            android:layout_marginTop="35dp">
+
+            <ImageView
+                android:id="@+id/overflow"
+                android:layout_width="20dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="TODO"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_dots_24dp"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/gps"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="45dp"
+                android:src="@drawable/route" />
+
+            <ImageView
+                android:id="@+id/microphone"
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="45dp"
+                android:src="@drawable/microphone" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="20dp"
+            android:alpha="0.2"
+            android:background="@drawable/divider_line" />
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
