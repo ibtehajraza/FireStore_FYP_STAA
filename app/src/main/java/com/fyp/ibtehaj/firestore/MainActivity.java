@@ -4,12 +4,18 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -20,7 +26,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,7 +41,11 @@ public class MainActivity extends AppCompatActivity {
     private String USER_ID ;
     private android.support.v7.widget.Toolbar toolbar;
 
+    private RecyclerView recyclerView;
+    private ScheduleAdapter adapter;
+    private List<Schedule> scheduleList;
 
+    private ShimmerFrameLayout mShimmerViewContainer;
 
 
     @Override
@@ -43,13 +55,56 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         toolbar = findViewById(R.id.main_page_toolbar);
+        toolbar.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("STAA");
 
+        getSupportActionBar().setTitle("");
+        TextView mTitle = toolbar.findViewById(R.id.toolBarTitle);
+        mTitle.setText("SCHEDULE");
+        mTitle.setAllCaps(true);
+        mTitle.setPadding(1,1,1,1);
 
         mAuth = FirebaseAuth.getInstance();
         USER_ID = null;
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
+        recyclerView =  findViewById(R.id.recycler_view);
+
+        scheduleList = new ArrayList<>();
+        adapter = new ScheduleAdapter(this, scheduleList);
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+//        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+//                Toast.makeText(getApplicationContext() , "onInterceptTouchEvent",Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+                rv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(view.getContext() , "Hello",Toast.LENGTH_LONG).show();
+                    }
+                });
+//                Toast.makeText(getApplicationContext() , "onTouchEvent",Toast.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+//                Toast.makeText(getApplicationContext() , "onRequestDisallowInterceptTouchEvent",Toast.LENGTH_LONG).show();
+
+            }
+        });
 
         getData();
         tempGetDatabase();
@@ -58,10 +113,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void getData(){
 
-        final TextView textView , textView1, textView2;
-        textView = findViewById(R.id.textView);
-        textView1 = findViewById(R.id.textView2);
-        textView2 = findViewById(R.id.textView3);
+//        final TextView textView , textView1, textView2;
+//        textView = findViewById(R.id.textView);
+//        textView1 = findViewById(R.id.textView2);
+//        textView2 = findViewById(R.id.textView3);
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -86,9 +141,9 @@ public class MainActivity extends AppCompatActivity {
                         +"\nPhone: "+salesMan.getContact());
 //                    log( dataSnapshot.getValue().toString());
 //                    log( "Name: "+salesMan.getName()+"\nEmail: "+salesMan.getEmail());
-                    textView.setText(salesMan.getName());
+                    log(salesMan.getName());
 
-                    textView1.setText(
+                    log(
                             "\nEmail: " + salesMan.getEmail() +
                             "\nArea: " + salesMan.getArea() +
                             "\nScore: " + salesMan.getScore() +
@@ -107,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                                 meeting = dataSnapshot.getValue(Meeting.class);
 //                                String value = dataSnapshot.getValue().toString();
                                 assert meeting != null;
-                                textView2.append(
+                                log(
                                         "Client Name: " + meeting.getClientName() +
                                         "\nTime Stamp: " + meeting.getTimeStamp() +
                                         "\nGPS: " + meeting.getGps()+
@@ -163,6 +218,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        mShimmerViewContainer.startShimmerAnimation();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
@@ -178,6 +234,11 @@ public class MainActivity extends AppCompatActivity {
         //  updateUI(currentUser);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mShimmerViewContainer.stopShimmerAnimation();
+    }
 
     private void logout(){
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -232,6 +293,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void tempGetDatabase(){
 
+        final int[] count = {0};
 //        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
 //                .getReference("Schedule").child("dVJADHQ2rDflxtuNjAmY1hh7wGy2");
 
@@ -257,11 +319,24 @@ public class MainActivity extends AppCompatActivity {
                                 +" - "+schedule.getDocId()
                                 +" - "+schedule.getDocName()
                                 +" - "+schedule.getTimeStamp());
+                        scheduleList.add(schedule);
                     }
                     for (DataSnapshot postDataSnapshot: dataSnapshot.child("medicine").getChildren()){
 
                         log("Key: "+postDataSnapshot.getKey()+" Value: "+ postDataSnapshot.getValue().toString());
                     }
+                    count[0] ++;
+
+                    log("Count = "+count[0]+"  TotalChildren: "+ dataSnapshot.getChildrenCount());
+
+                    if(count[0] >= dataSnapshot.getChildrenCount()){
+                        log("Count: "+ count[0] + " TotalChildren: "+ dataSnapshot.getChildrenCount());
+                    }
+
+                    log(scheduleList.size()+"  **SIZE");
+                    adapter.notifyDataSetChanged();
+                    mShimmerViewContainer.stopShimmerAnimation();
+                    mShimmerViewContainer.setVisibility(View.GONE);
                 }
 
             }
