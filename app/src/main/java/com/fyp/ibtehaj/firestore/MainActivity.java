@@ -1,5 +1,6 @@
 package com.fyp.ibtehaj.firestore;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,31 +83,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-//                Toast.makeText(getApplicationContext() , "onInterceptTouchEvent",Toast.LENGTH_LONG).show();
-                return false;
-            }
+        Context context = recyclerView.getContext();
+        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_silde_from_right);
+        recyclerView.setLayoutAnimation(controller);
 
-            @Override
-            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-                rv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(view.getContext() , "Hello",Toast.LENGTH_LONG).show();
-                    }
-                });
-//                Toast.makeText(getApplicationContext() , "onTouchEvent",Toast.LENGTH_LONG).show();
-
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-//                Toast.makeText(getApplicationContext() , "onRequestDisallowInterceptTouchEvent",Toast.LENGTH_LONG).show();
-
-            }
-        });
 
         getData();
         tempGetDatabase();
@@ -334,9 +316,10 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     log(scheduleList.size()+"  **SIZE");
-                    adapter.notifyDataSetChanged();
                     mShimmerViewContainer.stopShimmerAnimation();
                     mShimmerViewContainer.setVisibility(View.GONE);
+                    adapter.notifyDataSetChanged();
+                    recyclerView.scheduleLayoutAnimation();
                 }
 
             }
