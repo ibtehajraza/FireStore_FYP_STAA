@@ -251,7 +251,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.main_menu_account_setting:
-                Toast.makeText(this,"Account Setting",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this, AccountSettingActivity.class);
+                startActivity(intent);
+
                 break;
 
             default:

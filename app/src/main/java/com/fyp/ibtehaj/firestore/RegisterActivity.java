@@ -173,8 +173,8 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 //        mRef.push().setValue(salesMan);
-        mDatabase.child("sales man").child(userId).setValue(salesMan);
-        mDatabase.child("sales man").child(userId).child("meeting").push().setValue(meetingHash)
+        mDatabase.child("SalesMan").child(userId).setValue(salesMan);
+        mDatabase.child("SalesMan").child(userId).child("meeting").push().setValue(meetingHash)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

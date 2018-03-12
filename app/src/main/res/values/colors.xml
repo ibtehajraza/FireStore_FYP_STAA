@@ -6,4 +6,8 @@
     <color name="colorTitleText">#dc826d82</color>
     <color name="colorDivider">#826d82</color>
     <color name="colorHighlightCircle">#93268F</color>
+    <color name="colorWarningText">#D1B854</color>
+    <color name="colorSuccessfullText">#25AE88</color>
+    <color name="accountSettingTitleTextColor">#cdc5c7</color>
+    <color name="colorAccountFieldText">#978f91</color>
 </resources>

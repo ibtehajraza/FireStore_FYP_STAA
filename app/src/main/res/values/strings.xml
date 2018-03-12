@@ -15,4 +15,5 @@
     <string name="reg_sign_up_title_text">Sign Up</string>
     <string name="main_menu_log_out_txt">Log Out</string>
     <string name="main_menu_account_settings_txt">Account Settings</string>
+    <string name="update_account_txt">Update Account</string>
 </resources>
