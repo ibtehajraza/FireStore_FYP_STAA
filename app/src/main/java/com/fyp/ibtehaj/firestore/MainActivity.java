@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                                         "\nGPS: " + meeting.getGps()+
                                                 "\n\n"
                                 );
-                                log(meeting.getClientName());
+//                                log(meeting.getClientName());
                             }
                         }
 

@@ -162,7 +162,7 @@ public class RegisterActivity extends AppCompatActivity {
         SalesMan salesMan = new SalesMan();
         salesMan.setName(displayName);
         salesMan.setEmail(email);
-        salesMan.setArea("TEMP_Gulshan Iqbal, Karachi");
+        salesMan.setArea("TEMP");
         salesMan.setContact("090078601");
         salesMan.setScore("00");
 

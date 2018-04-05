@@ -18,7 +18,7 @@
         android:id="@+id/mainBody"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:orientation="vertical">
 
         <TextView
@@ -90,7 +90,6 @@
                 android:id="@+id/overflow"
                 android:layout_width="20dp"
                 android:layout_height="30dp"
-                android:layout_alignParentEnd="true"
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="10dp"
                 android:contentDescription="TODO"

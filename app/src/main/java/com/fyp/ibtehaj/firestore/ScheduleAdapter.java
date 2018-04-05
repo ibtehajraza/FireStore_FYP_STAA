@@ -1,9 +1,13 @@
 package com.fyp.ibtehaj.firestore;
 
+import android.*;
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -12,6 +16,7 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -47,6 +52,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -139,6 +145,31 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
                     Snackbar.make(view,"Need Permissions For Farther Actions",Snackbar.LENGTH_LONG).show();
                 }
                 v = view;
+            }
+        });
+
+        holder.statusText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Objects.equals(holder.statusText.getText().toString().toLowerCase(), " pending")) {
+                    holder.statusText.setText(" Done");
+                    holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.colorSuccessfullText));
+
+                    holder.statusText.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.success, 0, 0, 0);
+                    holder.statusText.setPadding(5, 0, 5, 0);
+
+                    /* Making a dramatic effect... I Know Right... **/
+                    holder.gps.setClickable(false);
+                    holder.gps.setAlpha((float) 0.5);
+
+                    holder.microphone.setClickable(false);
+                    holder.microphone.setAlpha((float) 0.5);
+
+                    holder.title.setAlpha((float) 0.5);
+                    holder.specialization.setAlpha((float) 0.5);
+                    holder.area.setAlpha((float) 0.5);
+                    holder.contact.setAlpha((float) 0.5);
+                }
             }
         });
 
@@ -276,7 +307,10 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
                 .withPermissions(
                         android.Manifest.permission.ACCESS_FINE_LOCATION,
                         android.Manifest.permission.RECORD_AUDIO,
-                        android.Manifest.permission.RECORD_AUDIO
+                        android.Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+
                 )
                 .withListener(new MultiplePermissionsListener() {
                     @Override
@@ -471,7 +505,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView title, specialization, area, contact;
+        public TextView title, specialization, area, contact, statusText;
         public ImageView sideBar,
                 overflow, gps, microphone;
 
@@ -481,6 +515,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
             specialization = itemView.findViewById(R.id.specialization);
             area = itemView.findViewById(R.id.area);
             contact = itemView.findViewById(R.id.contact);
+            statusText = itemView.findViewById(R.id.statusText);
 
             sideBar = itemView.findViewById(R.id.side_bar);
             overflow = itemView.findViewById(R.id.overflow);

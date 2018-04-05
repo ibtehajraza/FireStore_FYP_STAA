@@ -1,5 +1,6 @@
 package com.fyp.ibtehaj.firestore;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,13 +49,30 @@ public class AccountSettingActivity extends AppCompatActivity {
         updateAccount = findViewById(R.id.updateAccountBtn);
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-
+        updateAccount.setEnabled(false);
+        updateAccount.setAlpha((float) 0.5);
         setFields();
+
 
         updateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                assert currentUser != null;
+                DatabaseReference mRef = database.getReference("SalesMan")
+                        .child(currentUser.getUid());
 
+                SalesMan updatedSalesman = new SalesMan();
+                updatedSalesman.setName(nameEditText.getText().toString());
+                updatedSalesman.setArea(addressEditText.getText().toString());
+                updatedSalesman.setEmail(emailEditText.getText().toString());
+                updatedSalesman.setContact(phoneEditText.getText().toString());
+                mRef.setValue(updatedSalesman);
+                Snackbar.make(view, "Action Successful", Snackbar.LENGTH_LONG).show();
+
+//                updateAccount.setEnabled(false);
+//                updateAccount.setAlpha((float) 0.5);
             }
         });
     }
@@ -76,24 +94,35 @@ public class AccountSettingActivity extends AppCompatActivity {
                     // Get Post object and use the values to update the UI
                     SalesMan salesMan = dataSnapshot.getValue(SalesMan.class);
                     assert salesMan != null;
-                    Log.i(TAG,"Name: "+salesMan.getName()
-                            +"\nEmail: "+salesMan.getEmail()
-                            +"\nArea: "+salesMan.getArea()
-                            +"\nScore: "+salesMan.getScore()
-                            +"\nPhone: "+salesMan.getContact());
+                    Log.i(TAG, "Name1: " + salesMan.getName()
+                            + "\nEmail1: " + salesMan.getEmail()
+                            + "\nArea1: " + salesMan.getArea()
+                            + "\nScore1: " + salesMan.getScore()
+                            + "\nPhone1: " + salesMan.getContact());
 //                    log( dataSnapshot.getValue().toString());
 //                    log( "Name: "+salesMan.getName()+"\nEmail: "+salesMan.getEmail());
                     log(salesMan.getName());
+/* Setting the header for user profile**/
+                    nameTextView.setText(salesMan.getName());
+                    emailTextView.setText(salesMan.getEmail());
+                    scoreTextView.setText(salesMan.getScore());
+                    /* Setting the Text Fields **/
+                    nameEditText.setText(salesMan.getName());
+                    emailEditText.setText(salesMan.getEmail());
+                    phoneEditText.setText(salesMan.getContact());
+                    addressEditText.setText(salesMan.getArea());
 
-                    log(
-                            "\nEmail: " + salesMan.getEmail() +
-                                    "\nArea: " + salesMan.getArea() +
-                                    "\nScore: " + salesMan.getScore() +
-                                    "\nPhone: " + salesMan.getContact()
-                    );
+
+//                    log(
+//                            "\nEmail: " + salesMan.getEmail() +
+//                                    "\nArea: " + salesMan.getArea() +
+//                                    "\nScore: " + salesMan.getScore() +
+//                                    "\nPhone: " + salesMan.getContact()
+//                    );
 
 
-
+                    updateAccount.setEnabled(true);
+                    updateAccount.setAlpha(1);
 //                    DatabaseReference mMeetingRef = FirebaseDatabase.getInstance().getReference("SalesMan")
 //                            .child(mAuth.getCurrentUser().getUid()).child("meeting");
 
