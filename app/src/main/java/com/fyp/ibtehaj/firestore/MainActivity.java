@@ -3,6 +3,8 @@ package com.fyp.ibtehaj.firestore;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Typeface;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
 
-    private static String TAG = "KEY_CHAN";
+    private static String TAG = "mainActivity";
     private String USER_ID ;
     private android.support.v7.widget.Toolbar toolbar;
 
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        // Setting The ToolBar
         toolbar = findViewById(R.id.main_page_toolbar);
         toolbar.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         setSupportActionBar(toolbar);
@@ -67,10 +71,12 @@ public class MainActivity extends AppCompatActivity {
         mTitle.setAllCaps(true);
         mTitle.setPadding(1,1,1,1);
 
+        // Getting Authentication Status From Firebase
         mAuth = FirebaseAuth.getInstance();
         USER_ID = null;
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        // Setting up Some UI Improvements
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         recyclerView =  findViewById(R.id.recycler_view);
 
@@ -88,8 +94,21 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutAnimation(controller);
 
 
-        getData();
-        tempGetDatabase();
+        /* *
+        * Trying the day bar on top of the application
+        *
+        *
+        * */
+
+//        LinearLayout linearLayout = findViewById(R.id.day_view_linear_layout);
+
+
+        // Getting Data From FireBase
+        //getData();
+        /*
+        * This method was initially created for test purposes but now i have to re-think it
+        * */
+        tempGetDatabase("monday");
 
     }
 
@@ -275,19 +294,21 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void tempGetDatabase(){
-
+    private void tempGetDatabase(String selectedDay) {
+        log("IN: " + scheduleList.size());
+//        scheduleList = new ArrayList<>();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
         final int[] count = {0};
-//        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
-//                .getReference("Schedule").child("dVJADHQ2rDflxtuNjAmY1hh7wGy2");
+//        log(currentUser.getUid() + "Day "+ selectedDay);
+//        Calendar calendar = Calendar.getInstance();
+//        //dVJADHQ2rDflxtuNjAmY1hh7wGy2
+//        String dayLongName = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+//        log("******************"+dayLongName.toLowerCase()+"*************** ");
 
-        Calendar calendar = Calendar.getInstance();
-        String dayLongName = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
-        log("******************"+dayLongName.toLowerCase()+"***************");
         final Query databaseReference = FirebaseDatabase.getInstance()
-                .getReference("Schedule").child("dVJADHQ2rDflxtuNjAmY1hh7wGy2")
+                .getReference("Schedule").child(currentUser != null ? currentUser.getUid() : "")
                 .orderByChild("day")
-                .equalTo("monday");
+                .equalTo(selectedDay);
 
 
         /* **/
@@ -297,25 +318,27 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                 if(dataSnapshot.hasChildren()){
+
                     Schedule schedule = dataSnapshot.getValue(Schedule.class);
                     if (schedule != null) {
-                        log(schedule.getDay()+" - "+schedule.getBrick()
-                                +" - "+schedule.getDocId()
-                                +" - "+schedule.getDocName()
-                                +" - "+schedule.getTimeStamp());
+//                        log(schedule.getDay()+" - "+schedule.getBrick()
+//                                +" - "+schedule.getDocId()
+//                                +" - "+schedule.getDocName()
+//                                +" - "+schedule.getTimeStamp());
+//                        log(schedule.getDay());
                         scheduleList.add(schedule);
                     }
-                    for (DataSnapshot postDataSnapshot: dataSnapshot.child("medicine").getChildren()){
+//                    for (DataSnapshot postDataSnapshot: dataSnapshot.child("medicine").getChildren()){
+//
+//                        log("Key: "+postDataSnapshot.getKey()+" Value: "+ postDataSnapshot.getValue().toString());
+//                    }
+//                    count[0] ++;
 
-                        log("Key: "+postDataSnapshot.getKey()+" Value: "+ postDataSnapshot.getValue().toString());
-                    }
-                    count[0] ++;
+//                    log("Count = "+count[0]+"  TotalChildren: "+ dataSnapshot.getChildrenCount());
 
-                    log("Count = "+count[0]+"  TotalChildren: "+ dataSnapshot.getChildrenCount());
-
-                    if(count[0] >= dataSnapshot.getChildrenCount()){
-                        log("Count: "+ count[0] + " TotalChildren: "+ dataSnapshot.getChildrenCount());
-                    }
+//                    if(count[0] >= dataSnapshot.getChildrenCount()){
+//                        log("Count: "+ count[0] + " TotalChildren: "+ dataSnapshot.getChildrenCount());
+//                    }
 
                     log(scheduleList.size()+"  **SIZE");
                     mShimmerViewContainer.stopShimmerAnimation();
@@ -379,6 +402,50 @@ public class MainActivity extends AppCompatActivity {
 
     private void log(String log){
         Log.i(TAG,log);
+    }
+
+    public void getDay(View view) {
+        clearStylesFromDayGrid();
+        TextView counter = (TextView) view;
+        counter.setTypeface(null, Typeface.BOLD_ITALIC);
+        counter.setTextSize(18);
+        String tappedDay = counter.getTag().toString();
+//        Snackbar.make(view, counter.getTag().toString(), Snackbar.LENGTH_LONG)
+//                .show();
+//        scheduleList = new ArrayList<>();
+        scheduleList.clear();
+        adapter.notifyDataSetChanged();
+//        log( scheduleList.size() + "" );
+//        Log.i( "JJkk",adapter.getItemCount()+"");
+
+        tempGetDatabase(tappedDay);
+    }
+
+    /* Clearing any styles from the text view */
+    private void clearStylesFromDayGrid() {
+
+        TextView mon = findViewById(R.id.monTextView);
+        TextView tue = findViewById(R.id.tueTextView);
+        TextView wed = findViewById(R.id.wedTextView);
+        TextView thu = findViewById(R.id.thuTextView);
+        TextView fri = findViewById(R.id.friTextView);
+        TextView sat = findViewById(R.id.satTextView);
+
+
+        mon.setTypeface(null, Typeface.NORMAL);
+        tue.setTypeface(null, Typeface.NORMAL);
+        wed.setTypeface(null, Typeface.NORMAL);
+        thu.setTypeface(null, Typeface.NORMAL);
+        fri.setTypeface(null, Typeface.NORMAL);
+        sat.setTypeface(null, Typeface.NORMAL);
+
+        mon.setTextSize(15);
+        tue.setTextSize(15);
+        wed.setTextSize(15);
+        thu.setTextSize(15);
+        fri.setTextSize(15);
+        sat.setTextSize(15);
+
     }
 
     /* End of the main class**/

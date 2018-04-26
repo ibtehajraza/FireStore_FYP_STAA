@@ -99,13 +99,13 @@ public class AccountSettingActivity extends AppCompatActivity {
                             + "\nArea1: " + salesMan.getArea()
                             + "\nScore1: " + salesMan.getScore()
                             + "\nPhone1: " + salesMan.getContact());
-//                    log( dataSnapshot.getValue().toString());
-//                    log( "Name: "+salesMan.getName()+"\nEmail: "+salesMan.getEmail());
+
                     log(salesMan.getName());
 /* Setting the header for user profile**/
                     nameTextView.setText(salesMan.getName());
                     emailTextView.setText(salesMan.getEmail());
                     scoreTextView.setText(salesMan.getScore());
+
                     /* Setting the Text Fields **/
                     nameEditText.setText(salesMan.getName());
                     emailEditText.setText(salesMan.getEmail());
@@ -123,50 +123,7 @@ public class AccountSettingActivity extends AppCompatActivity {
 
                     updateAccount.setEnabled(true);
                     updateAccount.setAlpha(1);
-//                    DatabaseReference mMeetingRef = FirebaseDatabase.getInstance().getReference("SalesMan")
-//                            .child(mAuth.getCurrentUser().getUid()).child("meeting");
 
-                   /* mMeetingRef.addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            if (dataSnapshot.hasChildren()) {
-                                Meeting meeting ;
-                                meeting = dataSnapshot.getValue(Meeting.class);
-//                                String value = dataSnapshot.getValue().toString();
-                                assert meeting != null;
-                                log(
-                                        "Client Name: " + meeting.getClientName() +
-                                                "\nTime Stamp: " + meeting.getTimeStamp() +
-                                                "\nGPS: " + meeting.getGps()+
-                                                "\n\n"
-                                );
-                                log(meeting.getClientName());
-                            }
-                        }
-
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                    */
-
-//
 
                 }
 
