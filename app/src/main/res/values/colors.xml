@@ -10,4 +10,10 @@
     <color name="colorSuccessfullText">#25AE88</color>
     <color name="accountSettingTitleTextColor">#cdc5c7</color>
     <color name="colorAccountFieldText">#978f91</color>
+    <color name="colorReorderAppBar">#4F4F4F</color>
+
+    <color name="colorReorderGuyBlue">#56CCF2</color>
+    <color name="colorReorderGuyGreen">#6FCF97</color>
+    <color name="colorReorderGuyYellow">#F2C94C</color>
+
 </resources>

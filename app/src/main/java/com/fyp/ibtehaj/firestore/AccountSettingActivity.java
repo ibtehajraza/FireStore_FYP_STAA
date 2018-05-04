@@ -116,7 +116,7 @@ public class AccountSettingActivity extends AppCompatActivity {
 //                    log(
 //                            "\nEmail: " + salesMan.getEmail() +
 //                                    "\nArea: " + salesMan.getArea() +
-//                                    "\nScore: " + salesMan.getScore() +
+//                                    "\nScore: " + salesMan.getPrice() +
 //                                    "\nPhone: " + salesMan.getContact()
 //                    );
 

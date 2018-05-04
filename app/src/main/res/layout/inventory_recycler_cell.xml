@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#efebeb"
+    >
+
+    <TextView
+        android:id="@+id/medicine_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+
+        android:text="Arinac"
+        android:textColor="#646262"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="60dp"
+        android:layout_below="@id/medicine_name"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:layout_marginLeft="30dp"
+            android:textColor="#605c5c"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="20sp" />
+
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/text_box_background"
+            android:ems="10"
+            android:layout_marginLeft="10dp"
+            android:inputType="numberSigned"
+            android:text="25" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:textColor="#605c5c"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="20sp" />
+
+
+
+        <Button
+            android:id="@+id/add_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:background="@drawable/button_backdround"
+            android:elevation="5dp"
+            android:paddingEnd="50dp"
+            android:paddingStart="50dp"
+            android:requiresFadingEdge="horizontal|vertical"
+            android:text="Add to Cart" />
+
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="20dp"
+        android:layout_below="@id/linear_layout"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="20dp"
+        android:alpha="0.2"
+        android:background="@drawable/divider_line"
+        android:contentDescription="Divider" />
+
+
+</RelativeLayout>

@@ -2,6 +2,7 @@ package com.fyp.ibtehaj.firestore;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -219,12 +221,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+
+        SharedPreferences sharedPref = getSharedPreferences("status_string",Context.MODE_PRIVATE);
+        String status = sharedPref.getString(getString(R.string.status_tag), "");
+
+
+        Log.i("status"," ==> "+status);
+
+        Log.i("status","in on create ==> ");
+
         mShimmerViewContainer.startShimmerAnimation();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             log("UserID: "+currentUser.getUid());
             USER_ID = currentUser.getUid();
+
+            if(status.equals("ReOrderGuy")){
+                Intent intent = new Intent(MainActivity.this , ReorderGuyMainActivity.class);
+                startActivity(intent);
+                finish();
+            }
 
         }else{
             log("NOT SIGNED-IN");
@@ -295,10 +312,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void tempGetDatabase(String selectedDay) {
-        log("IN: " + scheduleList.size());
+//        log("IN: " + scheduleList.size());
 //        scheduleList = new ArrayList<>();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        final int[] count = {0};
+//        final int[] count = {0};
 //        log(currentUser.getUid() + "Day "+ selectedDay);
 //        Calendar calendar = Calendar.getInstance();
 //        //dVJADHQ2rDflxtuNjAmY1hh7wGy2

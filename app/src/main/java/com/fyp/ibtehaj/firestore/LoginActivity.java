@@ -28,11 +28,20 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ProgressDialog progress;
 
+    private String status;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Bundle intent = getIntent().getExtras();
+        if(intent != null) {
+            status = intent.getString("status");
+            Log.i("status", status+" ");
+        }
+
 
         progress = new ProgressDialog(this);
         progress.setTitle("Processing");
@@ -40,9 +49,9 @@ public class LoginActivity extends AppCompatActivity {
         progress.setCancelable(false);
 
 
-        mEmail = (TextInputLayout) findViewById(R.id.login_email);
-        mPassword = (TextInputLayout) findViewById(R.id.login_password);
-        mLoginBtn = (Button) findViewById(R.id.login_sign_in_btn);
+        mEmail = findViewById(R.id.login_email);
+        mPassword = findViewById(R.id.login_password);
+        mLoginBtn = findViewById(R.id.login_sign_in_btn);
         mAuth = FirebaseAuth.getInstance();
 
         TextView login_signUp_txt = findViewById(R.id.login_signUp_txt);
@@ -134,8 +143,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void SignUp_OnClick(View view) {
-        Log.i(TAG,"SignUp_ONCLICK");
+//        Log.i(TAG,"SignUp_ONCLICK");
         Intent reg_intent = new Intent(LoginActivity.this , RegisterActivity.class);
+        reg_intent.putExtra("status", status);
         startActivity(reg_intent);
         finish();
     }

@@ -2,6 +2,7 @@ package com.fyp.ibtehaj.firestore;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -19,21 +20,26 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private String TAG = "KEY_CHAN";
     private TextInputLayout mDisplayName;
     private TextInputLayout mEmail;
+    private TextInputLayout mPhoneNumber;
     private TextInputLayout mPassword;
     private FirebaseAuth mAuth;
     private ProgressDialog progress;
+    private String status;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         mDisplayName = findViewById(R.id.reg_display_name);
         mEmail = findViewById(R.id.reg_email);
+        mPhoneNumber = findViewById(R.id.reg_phone_number);
         mPassword = findViewById(R.id.reg_password);
         Button mSignUpBtn = findViewById(R.id.reg_sign_up_btn);
         TextView reg_signIn_txt = findViewById(R.id.reg_signin_str);
@@ -55,6 +62,20 @@ public class RegisterActivity extends AppCompatActivity {
         /* FireBase Auth**/
         mAuth = FirebaseAuth.getInstance();
         reg_signIn_txt.setText(Html.fromHtml("Already have an account? <b>Sign In</b>"));
+
+        Bundle intent = getIntent().getExtras();
+        if(intent != null) {
+            status = intent.getString("status");
+//            SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+//
+//            SharedPreferences.Editor editor = preferences.edit();
+//            editor.putString(getString(R.string.status_tag), status);
+//            editor.apply();
+//
+//            Log.i("status","In Register=> "+ preferences.getString("status", "defaultValue"));
+
+//            Log.i("status", status+" ");
+        }
 
 
         mSignUpBtn.setOnClickListener(new View.OnClickListener() {
@@ -121,14 +142,29 @@ public class RegisterActivity extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
 
-                                                    /* Updating Sales man entries**/
-                                                    updateDataBase(email , displayName);
 
-                                                    progress.dismiss();
-                                                    Intent login_successful_intent = new Intent (RegisterActivity.this, MainActivity.class);
-                                                    login_successful_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                    startActivity(login_successful_intent);
-                                                    finish();
+                                                    if(status.equals("SalesMan")){
+                                                    /* Updating Sales man entries in database**/
+                                                        updateDataBaseSalesMan(email , displayName);
+
+                                                        progress.dismiss();
+                                                        Intent login_successful_intent = new Intent (RegisterActivity.this, MainActivity.class);
+                                                        login_successful_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                        startActivity(login_successful_intent);
+                                                        finish();
+
+
+                                                    }else {
+                                                        /* Updating DB for Re-Order Guy **/
+                                                        updateDataBaseReorderGuy();
+
+                                                        progress.dismiss();
+                                                        Intent login_successful_intent = new Intent (RegisterActivity.this, ReorderGuyMainActivity.class);
+                                                        login_successful_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                        startActivity(login_successful_intent);
+                                                        finish();
+                                                    }
+
 
                                                     Log.d(TAG, "User profile updated.");
                                                 }
@@ -152,9 +188,11 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     /* To Create Basic Structure for sales rap database **/
-    private void updateDataBase(String email, String displayName) {
+    private void updateDataBaseSalesMan(String email, String displayName) {
+
+        String phoneNumber = mPhoneNumber.getEditText().getText().toString();
         String userId = mAuth.getCurrentUser().getUid();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference mDatabase;
 //        mDatabase = database.getReference("sales man");
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -162,9 +200,9 @@ public class RegisterActivity extends AppCompatActivity {
         SalesMan salesMan = new SalesMan();
         salesMan.setName(displayName);
         salesMan.setEmail(email);
-        salesMan.setArea("TEMP");
-        salesMan.setContact("090078601");
-        salesMan.setScore("00");
+        salesMan.setArea("");
+        salesMan.setContact(phoneNumber);
+        salesMan.setScore("50");
 
         HashMap<String , String> meetingHash = new HashMap<>();
         meetingHash.put("timestamp", Calendar.getInstance().getTime().toString());
@@ -206,6 +244,30 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
+    private void updateDataBaseReorderGuy(){
+
+        String phoneNumber = mPhoneNumber.getEditText().getText().toString();
+        String email = mEmail.getEditText().getText().toString();
+        String displayName = mDisplayName.getEditText().getText().toString();
+
+
+
+        String userId = mAuth.getCurrentUser().getUid();
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        // Creating Object For DataBase entry.
+        ReOrderGuy reOrderGuy= new ReOrderGuy();
+        reOrderGuy.setName(displayName);
+        reOrderGuy.setAddress("");
+        reOrderGuy.setEmail(email);
+        reOrderGuy.setPhone(phoneNumber);
+
+        mDatabase.child("ReOrderGuy").child(userId).setValue(reOrderGuy);
+
+
+    }
+
 
     private boolean validateCheck(){
 
@@ -213,6 +275,7 @@ public class RegisterActivity extends AppCompatActivity {
         String email = mEmail.getEditText().getText().toString();
         String password = mPassword.getEditText().getText().toString();
         String displayName = mDisplayName.getEditText().getText().toString();
+        String phoneNumber = mPhoneNumber.getEditText().getText().toString();
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             mEmail.setError("enter a valid email address");
@@ -239,8 +302,15 @@ public class RegisterActivity extends AppCompatActivity {
             mDisplayName.setError(null);
         }
 
+        if (phoneNumber.isEmpty() || phoneNumber.length() < 9 || displayName.length() > 15) {
+            mPhoneNumber.setError("Please Enter Correct Phone Number");
+            valid = false;
+        } else {
+            mPhoneNumber.setError(null);
+        }
+
         Log.i(TAG , "Display Name: "+displayName+"\nEmail: "+email+"\nPassword: "+password);
-        Toast.makeText(RegisterActivity.this,"Display Name: "+displayName+"\nEmail: "+email+"\nPassword: "+password,Toast.LENGTH_LONG).show();
+//        Toast.makeText(RegisterActivity.this,"Display Name: "+displayName+"\nEmail: "+email+"\nPassword: "+password,Toast.LENGTH_LONG).show();
         return valid;
     }
 

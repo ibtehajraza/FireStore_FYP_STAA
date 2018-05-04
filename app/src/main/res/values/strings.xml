@@ -16,4 +16,5 @@
     <string name="main_menu_log_out_txt">Log Out</string>
     <string name="main_menu_account_settings_txt">Account Settings</string>
     <string name="update_account_txt">Update Account</string>
+    <string name="status_tag">status</string>
 </resources>
