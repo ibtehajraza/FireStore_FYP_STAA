@@ -1,5 +1,7 @@
 package com.fyp.ibtehaj.firestore;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +20,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 public class AccountSettingActivity extends AppCompatActivity {
 
@@ -51,7 +55,15 @@ public class AccountSettingActivity extends AppCompatActivity {
 
         updateAccount.setEnabled(false);
         updateAccount.setAlpha((float) 0.5);
+
+        SharedPreferences sharedPref = getSharedPreferences("status_string", Context.MODE_PRIVATE);
+        String status = sharedPref.getString(getString(R.string.status_tag), "");
+        if(Objects.equals(status, "SalesMan")){
+
         setFields();
+        }else if(Objects.equals(status, "ReOrderGuy")){
+            setFieldsForReorder();
+        }
 
 
         updateAccount.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +123,69 @@ public class AccountSettingActivity extends AppCompatActivity {
                     emailEditText.setText(salesMan.getEmail());
                     phoneEditText.setText(salesMan.getContact());
                     addressEditText.setText(salesMan.getArea());
+
+
+//                    log(
+//                            "\nEmail: " + salesMan.getEmail() +
+//                                    "\nArea: " + salesMan.getArea() +
+//                                    "\nScore: " + salesMan.getPrice() +
+//                                    "\nPhone: " + salesMan.getContact()
+//                    );
+
+
+                    updateAccount.setEnabled(true);
+                    updateAccount.setAlpha(1);
+
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Getting Post failed, log a message
+                    Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                    // ...
+                }
+            };
+            mRef.addListenerForSingleValueEvent(postListener);
+//            mRef.addValueEventListener(postListener);
+        }
+
+
+    }
+
+
+    private void setFieldsForReorder() {
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+
+        if (currentUser != null) {
+
+            DatabaseReference mRef = database.getReference("ReOrderGuy")
+                    .child(currentUser.getUid());
+
+            ValueEventListener postListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // Get Post object and use the values to update the UI
+                    ReOrderGuy salesMan = dataSnapshot.getValue(ReOrderGuy.class);
+                    assert salesMan != null;
+                    Log.i(TAG, "Name1: " + salesMan.getName()
+                            + "\nEmail1: " + salesMan.getEmail()
+                            + "\nArea1: " + salesMan.getAddress()
+                            + "\nPhone1: " + salesMan.getPhone());
+
+                    log(salesMan.getName());
+/* Setting the header for user profile**/
+                    nameTextView.setText(salesMan.getName());
+                    emailTextView.setText(salesMan.getEmail());
+
+                    /* Setting the Text Fields **/
+                    nameEditText.setText(salesMan.getName());
+                    emailEditText.setText(salesMan.getEmail());
+                    phoneEditText.setText(salesMan.getPhone());
+                    addressEditText.setText(salesMan.getAddress());
 
 
 //                    log(

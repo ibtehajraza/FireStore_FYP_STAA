@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,11 @@ public class AddCartAdapter extends RecyclerView.Adapter<AddCartAdapter.MyViewHo
 
         final Medicine medicine = medicineList.get(position);
 
+
         holder.name.setText(medicine.getMedicineName());
+        holder.price.setText(medicine.getPrice());
+
+
         holder.cartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,10 +62,38 @@ public class AddCartAdapter extends RecyclerView.Adapter<AddCartAdapter.MyViewHo
                 Snackbar.make(view, cartMedicine.size()+"",Snackbar.LENGTH_LONG).show();
                 holder.cartButton.setBackgroundColor(Color.parseColor("#FFDA201D"));
                 holder.cartButton.setEnabled(false);
-                totalAmount += (Integer.parseInt( holder.quantity.getText().toString()) * medicine.getPrice()) ;
+                totalAmount += (Integer.parseInt( holder.quantity.getText().toString()) * Integer.parseInt(medicine.getPrice())) ;
 
             }
         });
+
+
+        holder.plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int temp = Integer.parseInt(holder.quantity.getText().toString()) + 1 ;
+//
+//Log.i("invoice", ++temp+"");
+                holder.quantity.setText(temp+"");
+
+
+            }
+        });
+
+
+        holder.minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int temp = Integer.parseInt(holder.quantity.getText().toString()) - 1 ;
+//
+//Log.i("invoice", ++temp+"");
+                holder.quantity.setText(temp+"");
+
+
+            }
+        });
+
+
 
     }
 
@@ -73,7 +106,7 @@ public class AddCartAdapter extends RecyclerView.Adapter<AddCartAdapter.MyViewHo
       return cartMedicine;
     }
 
-    public int totalAmmount(){
+    public int totalAmount(){
         return totalAmount;
     }
 
@@ -82,13 +115,23 @@ public class AddCartAdapter extends RecyclerView.Adapter<AddCartAdapter.MyViewHo
         Button cartButton;
         EditText quantity;
         TextView name;
+        TextView price;
+        TextView plus;
+        TextView minus;
+
+
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             cartButton = itemView.findViewById(R.id.add_cart);
             name = itemView.findViewById(R.id.medicine_name);
+            price = itemView.findViewById(R.id.price);
             quantity = itemView.findViewById(R.id.editText);
+
+            plus = itemView.findViewById(R.id.plus);
+            minus = itemView.findViewById(R.id.minus);
+
         }
     }
 

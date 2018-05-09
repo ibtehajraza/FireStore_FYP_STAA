@@ -4,17 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DDE21E"
     tools:context="com.fyp.ibtehaj.firestore.StartPageActivity">
+
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="54dp"
+        app:srcCompat="@mipmap/cover_logo" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="117dp"
+        android:layout_centerVertical="true"
         android:text="WELCOME"
-        android:textSize="36sp"
+        android:textSize="20sp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
@@ -25,22 +35,28 @@
 
     <Button
         android:id="@+id/start_reg_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="84dp"
         android:onClick="SignInBtn_Click"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="81dp"
+        android:paddingBottom="40dp"
+        android:background="@color/colorPrimaryDark"
+        android:paddingTop="40dp"
         android:text="Sales Man" />
 
     <Button
         android:id="@+id/start_login_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="0.5dp"
         android:onClick="SignInBtn_Click"
-        android:layout_below="@+id/start_reg_btn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="61dp"
+        android:background="@color/colorAccent"
+        android:paddingBottom="40dp"
+        android:paddingTop="40dp"
         android:text="Re-Order Man" />
 
 </RelativeLayout>

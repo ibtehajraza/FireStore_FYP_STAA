@@ -31,6 +31,8 @@ import com.google.firebase.database.Query;
 import java.util.ArrayList;
 import java.util.List;
 
+import spencerstudios.com.bungeelib.Bungee;
+
 public class ReorderGuyMainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -89,6 +91,7 @@ public class ReorderGuyMainActivity extends AppCompatActivity {
                 m[1] = medicalStore.getContact();
                 m[2] = medicalStore.getAddress();
                 i.putExtra("medical",m);
+                Bungee.slideLeft(ReorderGuyMainActivity.this);
                 startActivity(i);
 //                Toast.makeText(getApplicationContext(), movie.getName() + " is selected!", Toast.LENGTH_SHORT).show();
             }
@@ -220,8 +223,9 @@ public class ReorderGuyMainActivity extends AppCompatActivity {
         if (currentUser != null) {
             FirebaseAuth.getInstance().signOut();
 //            log("currentUser: "+currentUser);
-            Intent intent = new Intent(ReorderGuyMainActivity.this , StartPageActivity.class);
+            Intent intent = new Intent(ReorderGuyMainActivity.this , LoginActivity.class);
             startActivity(intent);
+            Bungee.shrink(ReorderGuyMainActivity.this);
             finish();
         }
     }

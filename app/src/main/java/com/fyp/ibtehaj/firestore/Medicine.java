@@ -7,12 +7,12 @@ package com.fyp.ibtehaj.firestore;
 public class Medicine {
     String medicineName,
     companyName;
-    int price;
+    String price;
 
     public Medicine() {
     }
 
-    public Medicine(String medicineName, String companyName, int price) {
+    public Medicine(String medicineName, String companyName, String price) {
         this.medicineName = medicineName;
         this.companyName = companyName;
         this.price = price;
@@ -34,11 +34,11 @@ public class Medicine {
         this.companyName = companyName;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 }

@@ -29,6 +29,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Objects;
 
+import spencerstudios.com.bungeelib.Bungee;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private String TAG = "KEY_CHAN";
@@ -101,6 +103,8 @@ public class RegisterActivity extends AppCompatActivity {
         if(currentUser != null){
             Intent login_intent = new Intent(RegisterActivity.this , MainActivity.class);
             startActivity(login_intent);
+            Bungee.zoom(RegisterActivity.this);
+
             finish();
         }
     }
@@ -151,6 +155,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                         Intent login_successful_intent = new Intent (RegisterActivity.this, MainActivity.class);
                                                         login_successful_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                         startActivity(login_successful_intent);
+                                                        Bungee.slideUp(RegisterActivity.this);
                                                         finish();
 
 
@@ -162,6 +167,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                         Intent login_successful_intent = new Intent (RegisterActivity.this, ReorderGuyMainActivity.class);
                                                         login_successful_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                         startActivity(login_successful_intent);
+                                                        Bungee.slideUp(RegisterActivity.this);
                                                         finish();
                                                     }
 
@@ -320,6 +326,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         Intent login_intent = new Intent(RegisterActivity.this , LoginActivity.class);
         startActivity(login_intent);
+        Bungee.swipeRight(RegisterActivity.this);
         finish();
     }
 }

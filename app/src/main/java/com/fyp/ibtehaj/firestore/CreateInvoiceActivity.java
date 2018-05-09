@@ -2,6 +2,8 @@ package com.fyp.ibtehaj.firestore;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -16,6 +18,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -78,7 +84,7 @@ public class CreateInvoiceActivity extends AppCompatActivity {
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_silde_from_right);
         recyclerView.setLayoutAnimation(controller);
 
-                prepareData();
+//                prepareData();
 
         fetchData();
 
@@ -86,7 +92,16 @@ public class CreateInvoiceActivity extends AppCompatActivity {
         check_out_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("invoice",adapter.getItemCount()+"");
+
+                Log.i("invoice",adapter.totalAmount()+"");
+                Log.i("invoice",adapter.getCartData().size()+"");
+
+                CustomDialogBuilder cdd = new CustomDialogBuilder(CreateInvoiceActivity.this);
+                cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                cdd.show();
+                cdd.setContent(adapter.totalAmount()+"", adapter.getCartData().size()+"");
+
+
             }
         });
 
@@ -96,53 +111,97 @@ public class CreateInvoiceActivity extends AppCompatActivity {
 
     private void fetchData() {
 
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
+                .getReference("Medicines");
+
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                if(dataSnapshot.hasChildren()){
+                    Log.i("recy",dataSnapshot.getChildrenCount()+" ");
+                    Medicine medicine = dataSnapshot.getValue(Medicine.class);
+
+                    if(medicine != null){
+                        medicineList.add(medicine);
+                    }
+
+                    adapter.notifyDataSetChanged();
+                    recyclerView.scheduleLayoutAnimation();
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
 
 
     }
 
-    private void prepareData() {
-
-        Medicine medicine = new Medicine("Arinic", "aaa", 66);
-        medicineList.add(medicine);
-
-        medicine = new Medicine("Arinic", "aaa", 66);
-        medicineList.add(medicine);
-
-        medicine = new Medicine("Arinic", "aaa", 66);
-        medicineList.add(medicine);
-
-        medicine = new Medicine("Arinic", "aaa", 66);
-        medicineList.add(medicine);
-
-        medicine = new Medicine("Arinic", "aaa", 66);
-        medicineList.add(medicine);
-
-        medicine = new Medicine("Arinic", "aaa", 66);
-        medicineList.add(medicine);
-
-        medicine = new Medicine("Arinic", "aaa", 66);
-        medicineList.add(medicine);
-
-        medicine = new Medicine("Arinic", "aaa", 66);
-        medicineList.add(medicine);
-
-        medicine = new Medicine("Arinic", "aaa", 66);
-        medicineList.add(medicine);
-
-        medicine = new Medicine("Arinic", "aaa", 66);
-        medicineList.add(medicine);
-
-        medicine = new Medicine("Arinic", "aaa", 66);
-        medicineList.add(medicine);
-
-        medicine = new Medicine("Arinic", "aaa", 66);
-        medicineList.add(medicine);
-
-        medicine = new Medicine("Arinic", "aaa", 66);
-        medicineList.add(medicine);
-
-
-        adapter.notifyDataSetChanged();
-    }
+//    private void prepareData() {
+//
+//        Medicine medicine = new Medicine("Arinic", "aaa", 66);
+//        medicineList.add(medicine);
+//
+//        medicine = new Medicine("Arinic", "aaa", 66);
+//        medicineList.add(medicine);
+//
+//        medicine = new Medicine("Arinic", "aaa", 66);
+//        medicineList.add(medicine);
+//
+//        medicine = new Medicine("Arinic", "aaa", 66);
+//        medicineList.add(medicine);
+//
+//        medicine = new Medicine("Arinic", "aaa", 66);
+//        medicineList.add(medicine);
+//
+//        medicine = new Medicine("Arinic", "aaa", 66);
+//        medicineList.add(medicine);
+//
+//        medicine = new Medicine("Arinic", "aaa", 66);
+//        medicineList.add(medicine);
+//
+//        medicine = new Medicine("Arinic", "aaa", 66);
+//        medicineList.add(medicine);
+//
+//        medicine = new Medicine("Arinic", "aaa", 66);
+//        medicineList.add(medicine);
+//
+//        medicine = new Medicine("Arinic", "aaa", 66);
+//        medicineList.add(medicine);
+//
+//        medicine = new Medicine("Arinic", "aaa", 66);
+//        medicineList.add(medicine);
+//
+//        medicine = new Medicine("Arinic", "aaa", 66);
+//        medicineList.add(medicine);
+//
+//        medicine = new Medicine("Arinic", "aaa", 66);
+//        medicineList.add(medicine);
+//
+//
+//        adapter.notifyDataSetChanged();
+//    }
 }

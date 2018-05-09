@@ -226,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
         String status = sharedPref.getString(getString(R.string.status_tag), "");
 
 
+
         Log.i("status"," ==> "+status);
 
         Log.i("status","in on create ==> ");

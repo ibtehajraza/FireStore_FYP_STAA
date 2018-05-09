@@ -12,10 +12,19 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="26dp"
-
         android:text="Arinac"
         android:textColor="#646262"
         android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/medicine_name"
+        android:layout_centerHorizontal="true"
+        android:text="Rs. 23.00"
+        android:textColor="#646262"
+        android:textSize="16sp" />
 
     <LinearLayout
         android:id="@+id/linear_layout"
@@ -28,6 +37,7 @@
 
 
         <TextView
+            android:id="@+id/minus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-"
@@ -48,6 +58,7 @@
             android:text="25" />
 
         <TextView
+            android:id="@+id/plus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="+"
@@ -64,8 +75,8 @@
             android:layout_marginLeft="50dp"
             android:background="@drawable/button_backdround"
             android:elevation="5dp"
-            android:paddingEnd="50dp"
-            android:paddingStart="50dp"
+            android:paddingEnd="40dp"
+            android:paddingStart="40dp"
             android:requiresFadingEdge="horizontal|vertical"
             android:text="Add to Cart" />
 

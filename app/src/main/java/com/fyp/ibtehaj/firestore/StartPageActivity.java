@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import spencerstudios.com.bungeelib.Bungee;
+
 public class StartPageActivity extends AppCompatActivity {
 
     private Button mRegBtn;
@@ -74,6 +76,8 @@ if(preferences.getString(getString(R.string.status_tag), "") == ""){
         Intent intent = new Intent(StartPageActivity.this , LoginActivity.class);
         intent.putExtra("status", temp);
         startActivity(intent);
+        Bungee.zoom(StartPageActivity.this);
+        finish();
 
     }
 }
