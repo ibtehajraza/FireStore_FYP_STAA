@@ -13,7 +13,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -50,7 +55,7 @@ public class AddCartAdapter extends RecyclerView.Adapter<AddCartAdapter.MyViewHo
 
 
         holder.name.setText(medicine.getMedicineName());
-        holder.price.setText(medicine.getPrice());
+        holder.price.setText("Rs. "+medicine.getPrice());
 
 
         holder.cartButton.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +64,7 @@ public class AddCartAdapter extends RecyclerView.Adapter<AddCartAdapter.MyViewHo
 
 
                 cartMedicine.add(medicine);
-                Snackbar.make(view, cartMedicine.size()+"",Snackbar.LENGTH_LONG).show();
+//                Snackbar.make(view, cartMedicine.size()+"",Snackbar.LENGTH_LONG).show();
                 holder.cartButton.setBackgroundColor(Color.parseColor("#FFDA201D"));
                 holder.cartButton.setEnabled(false);
                 totalAmount += (Integer.parseInt( holder.quantity.getText().toString()) * Integer.parseInt(medicine.getPrice())) ;
@@ -103,7 +108,19 @@ public class AddCartAdapter extends RecyclerView.Adapter<AddCartAdapter.MyViewHo
     }
 
     public List<Medicine> getCartData(){
-      return cartMedicine;
+
+//        FirebaseAuth mAuth;
+//        DatabaseReference mDatabase;
+//        // Getting Authentication Status From Firebase
+//        mAuth = FirebaseAuth.getInstance();
+//        mDatabase = FirebaseDatabase.getInstance().getReference("Order");
+//
+//        HashMap<String, String> temp = new HashMap<>();
+////        temp.put("medicalStoreName",);
+//
+//        mDatabase.child(mAuth.getUid()).setValue("jhvjh");
+
+        return cartMedicine;
     }
 
     public int totalAmount(){

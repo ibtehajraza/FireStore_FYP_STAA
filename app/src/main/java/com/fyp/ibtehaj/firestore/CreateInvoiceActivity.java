@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CreateInvoiceActivity extends AppCompatActivity {
@@ -36,7 +37,7 @@ public class CreateInvoiceActivity extends AppCompatActivity {
     private List<Medicine> medicineList = new ArrayList<>();
     private RecyclerView recyclerView;
     private AddCartAdapter adapter;
-
+    String status[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class CreateInvoiceActivity extends AppCompatActivity {
 
         Bundle intent = getIntent().getExtras();
         if(intent != null) {
-            String status[] = intent.getStringArray("medical");
+            status= intent.getStringArray("medical");
             Log.i("invoice",status[0]);
         }
 
@@ -95,6 +96,29 @@ public class CreateInvoiceActivity extends AppCompatActivity {
 
                 Log.i("invoice",adapter.totalAmount()+"");
                 Log.i("invoice",adapter.getCartData().size()+"");
+
+                FirebaseAuth mAuth;
+                DatabaseReference mDatabase;
+                // Getting Authentication Status From Firebase
+                mAuth = FirebaseAuth.getInstance();
+                mDatabase = FirebaseDatabase.getInstance().getReference("Order");
+
+                HashMap<String, String> temp = new HashMap<>();
+                temp.put("medicalStoreName", status[0]);
+                temp.put("totalAmount", adapter.totalAmount()+"");
+
+                List tempa = adapter.getCartData();
+
+                for(int i=0 ; i < tempa.size(); i++ ){
+                    Medicine m = ( Medicine) tempa.get(i);
+                    temp.put(i+"", m.companyName);
+
+                }
+//                adapter.getCartData()
+//                temp.put("product", adapter.getCartData().toArray().toString());
+
+
+                mDatabase.child(mAuth.getUid()).push().setValue(temp);
 
                 CustomDialogBuilder cdd = new CustomDialogBuilder(CreateInvoiceActivity.this);
                 cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

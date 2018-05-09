@@ -14,7 +14,7 @@
         android:layout_marginTop="26dp"
         android:text="Arinac"
         android:textColor="#646262"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/price"

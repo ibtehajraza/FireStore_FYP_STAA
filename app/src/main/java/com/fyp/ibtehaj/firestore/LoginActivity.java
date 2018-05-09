@@ -70,9 +70,16 @@ public class LoginActivity extends AppCompatActivity {
                  login(email , password);
                 }
 
+//                String domin[] = email.split("@");
+//                String secondHalf = domin[1];
+//                String sHalf[] = secondHalf.split(".c");
+//                String domain = sHalf[0];
+
+//                Log.i("domain",domain);
 
                 Log.i(TAG ,"Email: "+email+"\nPassword: "+password);
 //                Toast.makeText(LoginActivity.this,"Email: "+email+"\nPassword: "+password,Toast.LENGTH_LONG).show();
+//                Toast.makeText(LoginActivity.this,"Domain: "+domain,Toast.LENGTH_LONG).show();
             }
         });
 
@@ -80,7 +87,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login(String email , String password){
 
-        
+        String domin[] = email.split("@");
+        String secondHalf = domin[1];
+        String sHalf[] = secondHalf.split(".c");
+        String domain = sHalf[0];
+//
+//
+//        Log.i("domain",domain);
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -90,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
                             Intent main_intent = new Intent(LoginActivity.this , MainActivity.class);
                             main_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(main_intent);

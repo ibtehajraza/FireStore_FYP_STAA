@@ -61,13 +61,12 @@ public class StartPageActivity extends AppCompatActivity {
 
 
         SharedPreferences preferences = getSharedPreferences("status_string",MODE_PRIVATE);
-if(preferences.getString(getString(R.string.status_tag), "") == ""){
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(getString(R.string.status_tag), temp);
-        editor.apply();
-//    Log.i("status","Added Preference ");
-
-}
+        if(preferences.getString(getString(R.string.status_tag), "") == ""){
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(getString(R.string.status_tag), temp);
+            editor.apply();
+            //    Log.i("status","Added Preference ");
+        }
 
 //        Log.i("status","In Register=> "+ preferences.getString(getString(R.string.status_tag), "defaultValue"));
 
