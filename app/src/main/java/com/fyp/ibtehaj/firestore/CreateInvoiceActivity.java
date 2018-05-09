@@ -106,6 +106,7 @@ public class CreateInvoiceActivity extends AppCompatActivity {
                 HashMap<String, String> temp = new HashMap<>();
                 temp.put("medicalStoreName", status[0]);
                 temp.put("totalAmount", adapter.totalAmount()+"");
+                temp.put("status", "false");
 
                 List tempa = adapter.getCartData();
 
